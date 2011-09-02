@@ -35,11 +35,14 @@ Lokad.CQRS provides help in writing these messages, message handlers, dealing wi
 
 Go to <http://abdullin.com/cqrs> to start learning more about CQRS and distributed systems. 
 
-Check out Samples within the project for some practical guidance on building system with Lokad.CQRS using:
+> We strongly recommend to make sure that you've checked the link above, and also watched a video course by Greg Young. First video is available on [http://cqrsinfo.com](http://cqrsinfo.com), second two are available via [torrent](chapter-03-content/GregYoung_CQRS_2011JUL21.torrent).
 
-* Microsoft .NET Stack
-* ASP.NET MVC
+You can proceed by:
 
+* Checking out snippets within [lokad-cqrs](https://github.com/lokad/lokad-cqrs/) sources.
+* [lokad-cqrs-samples](https://github.com/Lokad/lokad-cqrs-samples) for samples and templates.
+
+Note, that it's always best to make sure that you are pulling samples and snippets from the latest code (i.e.: branch 'next' for lokad-cqrs).
 
 ## Project Structure
 Lokad.CQRS consists of the following important elements:
