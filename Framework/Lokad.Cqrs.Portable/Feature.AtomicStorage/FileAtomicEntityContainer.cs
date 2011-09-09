@@ -31,7 +31,7 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
             try
             {
                 var name = GetName(key);
-                using (var stream = File.OpenRead(name))
+                using (var stream = File.Open(name, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     view = _strategy.Deserialize<TEntity>(stream);
                     return true;

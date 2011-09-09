@@ -61,13 +61,26 @@ namespace Lokad.Cqrs.Feature.StreamingStorage
             ThrowIfContainerNotFound();
             ThrowIfConditionFailed(condition);
 
-            using (var file = _file.OpenWrite())
+            using (var file = OpenForWrite())
             {
                 writer(file);
                 // stream will probably be closed here.
             }
             Refresh();
             return _file.Length;
+        }
+
+        FileStream OpenForWrite()
+        {
+            // we allow concurrent reading
+            // no more writers are allowed
+            return _file.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+        }
+
+        FileStream OpenForRead()
+        {
+            // we allow concurrent writing or reading
+            return _file.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
         }
 
         /// <summary>
@@ -87,7 +100,7 @@ namespace Lokad.Cqrs.Feature.StreamingStorage
             ThrowIfConditionFailed(condition);
 
             var props = GetUnconditionalInfo().Value;
-            using (var read = _file.OpenRead())
+            using (var read = OpenForRead())
             {
                 reader(props, read);
             }
