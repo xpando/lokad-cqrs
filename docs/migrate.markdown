@@ -15,10 +15,10 @@ Domain configuration
 `Domain` was replaced with a set of container-specific configs to wire handler classes 
 (classes that process messages). At the moment of writing we support:
 
-* Autofac in Lokad.Cqrs.Autofac.dll (you'll need to use Autofac.dll as well)
-* StructureMap in Lokad.Cqrs.StructureMap.dll (you'll need to use StructureMap.dll as well)
+* Autofac in `Lokad.Cqrs.Autofac.dll` (you'll need to use `Autofac.dll` as well)
+* StructureMap in `Lokad.Cqrs.StructureMap.dll` (you'll need to use `StructureMap.dll` as well)
   
-> Note, that if you use something like Greg's lambda handlers, you don't need handler classes and any container at all.
+Note, that if you use something like Greg's lambda handlers, you don't need handler classes and any container at all.
 
 **Before**
 
