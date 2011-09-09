@@ -1,4 +1,7 @@
-This is before/after samples to demonstrate changes in Lokad.Cqrs configuration API from version 2 (and some times before) to Next.
+Migrate from v2.0 to v3.0
+
+These are before/after samples to demonstrate changes in Lokad.Cqrs configuration API from version 2 
+(and some times before) to Next.
 
 Domain configuration
 --------------------
@@ -50,3 +53,16 @@ After
                     x.DecayPolicy(TimeSpan.FromSeconds(0.75));
                 });
         });
+        
+Atomic Storage
+--------------
+
+
+Only specialized atomic interfaces were changed (if you used them).
+
+
+    Before                                                  After
+    IAtomicEntityWriter<TKey, TValue>                       IAtomicWriter<TKey, TValue>
+    IAtomicEntityReader<TKey, TValue>                       IAtomicReader<TKey, TValue>
+    IAtomicSingletonWriter<TValue>                          IAtomicWriter<unit, TValue>
+    IAtomicSingletonReader<TValue>                          IAtomicReader<unit, TValue>
