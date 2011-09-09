@@ -35,28 +35,12 @@ namespace Lokad.Cqrs
         /// <param name="config">The config.</param>
         /// <param name="container">A preconfigured structuremap container</param>
         public static void MessagesWithHandlersFromStructureMap(this CqrsEngineBuilder builder,
-            Action<MessagesWithHandlersConfigurationSyntax> config,IContainer container)
+            Action<MessagesWithHandlersConfigurationSyntax> config, IContainer container)
         {
 
-            var subject = builder.Advanced.Observers
-              .Where(t => typeof(IObservable<ISystemEvent>).IsAssignableFrom(t.GetType()))
-              .Cast<IObservable<ISystemEvent>>()
-              .FirstOrDefault();
-
-            if (null == subject)
-            {
-                var s = new Subject<ISystemEvent>();
-                subject = s;
-                builder.Advanced.Observers.Add(s);
-            }
-
-
-                        var provider = new StructureMapContainerProvider(container,subject);
-
-            builder.MessagesWithHandlers(provider
-                .Build, config);
-
-
+            var provider = new StructureMapContainerProvider(container);
+            builder.StartupTasks.Add(new StructureMapImportTask(container));
+            builder.MessagesWithHandlers(provider.Build, config);
         }
     }
 }
