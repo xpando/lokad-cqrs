@@ -4,7 +4,7 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
 {
     public static class ExtendAtomicEntityWriter
     {
-        public static TEntity AddOrUpdate<TKey,TEntity>(this IAtomicEntityWriter<TKey, TEntity> self, TKey key, Func<TEntity> addFactory, Action<TEntity> update, AddOrUpdateHint hint = AddOrUpdateHint.ProbablyExists)
+        public static TEntity AddOrUpdate<TKey,TEntity>(this IAtomicWriter<TKey, TEntity> self, TKey key, Func<TEntity> addFactory, Action<TEntity> update, AddOrUpdateHint hint = AddOrUpdateHint.ProbablyExists)
         {
             return self.AddOrUpdate(key, addFactory, entity =>
                 {
@@ -12,7 +12,7 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
                     return entity;
                 }, hint);
         }
-        public static TEntity AddOrUpdate<TKey,TEntity>(this IAtomicEntityWriter<TKey,TEntity> self, TKey key, TEntity newView, Action<TEntity> updateViewFactory, AddOrUpdateHint hint = AddOrUpdateHint.ProbablyExists)
+        public static TEntity AddOrUpdate<TKey,TEntity>(this IAtomicWriter<TKey,TEntity> self, TKey key, TEntity newView, Action<TEntity> updateViewFactory, AddOrUpdateHint hint = AddOrUpdateHint.ProbablyExists)
         {
             return self.AddOrUpdate(key, () => newView, view =>
                 {
@@ -21,7 +21,7 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
                 }, hint); 
         }
 
-        public static TEntity Add<TKey,TEntity>(this IAtomicEntityWriter<TKey, TEntity> self, TKey key, TEntity newEntity)
+        public static TEntity Add<TKey,TEntity>(this IAtomicWriter<TKey, TEntity> self, TKey key, TEntity newEntity)
         {
             return self.AddOrUpdate(key, newEntity, e =>
                 {
@@ -31,7 +31,7 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
         }
 
 
-        public static TEntity UpdateOrThrow<TKey,TEntity>(this IAtomicEntityWriter<TKey,TEntity> self, TKey key, Func<TEntity, TEntity> change)
+        public static TEntity UpdateOrThrow<TKey,TEntity>(this IAtomicWriter<TKey,TEntity> self, TKey key, Func<TEntity, TEntity> change)
         {
             return self.AddOrUpdate(key, () =>
                 {
@@ -39,7 +39,7 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
                     throw new InvalidOperationException(txt);
                 }, change, AddOrUpdateHint.ProbablyExists);
         }
-        public static TEntity UpdateOrThrow<TKey,TEntity>(this IAtomicEntityWriter<TKey,TEntity> self, TKey key, Action<TEntity> change)
+        public static TEntity UpdateOrThrow<TKey,TEntity>(this IAtomicWriter<TKey,TEntity> self, TKey key, Action<TEntity> change)
         {
             return self.AddOrUpdate(key, () =>
                 {
@@ -48,7 +48,7 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
                 }, change, AddOrUpdateHint.ProbablyExists);
         }
 
-        public static TView UpdateEnforcingNew<TKey,TView>(this IAtomicEntityWriter<TKey,TView> self, TKey key,
+        public static TView UpdateEnforcingNew<TKey,TView>(this IAtomicWriter<TKey,TView> self, TKey key,
             Action<TView> update, AddOrUpdateHint hint = AddOrUpdateHint.ProbablyExists)
             where TView : new()
         {

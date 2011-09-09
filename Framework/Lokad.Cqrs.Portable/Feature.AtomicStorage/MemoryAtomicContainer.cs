@@ -4,13 +4,13 @@ using System.IO;
 
 namespace Lokad.Cqrs.Feature.AtomicStorage
 {
-    public sealed class MemoryAtomicEntityContainer<TKey,TEntity> : IAtomicEntityReader<TKey,TEntity>, IAtomicEntityWriter<TKey,TEntity>
+    public sealed class MemoryAtomicContainer<TKey,TEntity> : IAtomicReader<TKey,TEntity>, IAtomicWriter<TKey,TEntity>
     {
         readonly IAtomicStorageStrategy _strategy;
         readonly string _entityPrefix;
         readonly ConcurrentDictionary<string, byte[]> _store;
 
-        public MemoryAtomicEntityContainer(ConcurrentDictionary<string, byte[]> store, IAtomicStorageStrategy strategy)
+        public MemoryAtomicContainer(ConcurrentDictionary<string, byte[]> store, IAtomicStorageStrategy strategy)
         {
             _store = store;
             _strategy = strategy;

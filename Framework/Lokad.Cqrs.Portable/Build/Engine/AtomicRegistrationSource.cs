@@ -25,14 +25,14 @@ namespace Lokad.Cqrs.Build.Engine
             var arguments = serviceType.GetGenericArguments();
             
             
-            if (definition == typeof(IAtomicEntityReader<,>))
+            if (definition == typeof(IAtomicReader<,>))
             {
                 return typeof(IAtomicStorageFactory)
                     .GetMethod("GetEntityReader")
                     .MakeGenericMethod(arguments)
                     .Invoke(factory, null);
             }
-            if (definition == typeof(IAtomicEntityWriter<,>))
+            if (definition == typeof(IAtomicWriter<,>))
             {
                 return typeof(IAtomicStorageFactory)
                     .GetMethod("GetEntityWriter")

@@ -25,7 +25,7 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
         protected static Action<ImmutableEnvelope> Bootstrap(Container container)
         {
             var handling = new HandlerComposer();
-            handling.Add<AtomicMessage, IMessageSender, IAtomicEntityWriter<unit,int>>(HandleAtomic);
+            handling.Add<AtomicMessage, IMessageSender, IAtomicWriter<unit,int>>(HandleAtomic);
             handling.Add<NuclearMessage, IMessageSender, NuclearStorage>(HandleNuclear);
             return handling.BuildHandler(container);
         }
@@ -84,7 +84,7 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
                 .Subscribe(e => source.Cancel());
         }
 
-        protected static void HandleAtomic(AtomicMessage msg, IMessageSender sender, IAtomicEntityWriter<unit, int> arg3)
+        protected static void HandleAtomic(AtomicMessage msg, IMessageSender sender, IAtomicWriter<unit, int> arg3)
         {
             var count = arg3.AddOrUpdate(unit.it, () => 1, i => i + 1);
             if (count > 2)

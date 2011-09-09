@@ -17,15 +17,15 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
     /// </summary>
     /// <typeparam name="TEntity">The type of the view.</typeparam>
     /// <typeparam name="TKey">the type of the key</typeparam>
-    public sealed class AzureAtomicEntityWriter<TKey, TEntity> :
-        IAtomicEntityWriter<TKey, TEntity>
+    public sealed class AzureAtomicWriter<TKey, TEntity> :
+        IAtomicWriter<TKey, TEntity>
         //where TEntity : IAtomicEntity<TKey>
     {
         readonly CloudBlobContainer _entityContainer;
         readonly CloudBlobContainer _singletonContainer;
         readonly IAtomicStorageStrategy _strategy;
 
-        public AzureAtomicEntityWriter(IAzureStorageConfig storage, IAtomicStorageStrategy strategy)
+        public AzureAtomicWriter(IAzureStorageConfig storage, IAtomicStorageStrategy strategy)
         {
             _strategy = strategy;
             var client = storage.CreateBlobClient();

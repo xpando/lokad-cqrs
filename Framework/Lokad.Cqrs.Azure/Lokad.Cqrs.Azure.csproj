@@ -70,8 +70,8 @@
     <Compile Include="AzureSettingsProvider.cs" />
     <Compile Include="Build\Engine\CqrsEngineRole.cs" />
     <Compile Include="Core.Envelope\EnvelopeSerializerWithProtoBuf.cs" />
-    <Compile Include="Feature.AtomicStorage\AzureAtomicEntityWriter.cs" />
-    <Compile Include="Feature.AtomicStorage\AzureAtomicEntityReader.cs" />
+    <Compile Include="Feature.AtomicStorage\AzureAtomicWriter.cs" />
+    <Compile Include="Feature.AtomicStorage\AzureAtomicReader.cs" />
     <Compile Include="Feature.AtomicStorage\AzureAtomicStorageFactory.cs" />
     <Compile Include="Build\AzureStorageConfigurationBuilder.cs" />
     <Compile Include="Feature.AzurePartition\Inbox\AzurePartitionInbox.cs" />

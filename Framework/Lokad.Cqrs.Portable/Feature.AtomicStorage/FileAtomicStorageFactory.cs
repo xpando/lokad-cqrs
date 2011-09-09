@@ -16,14 +16,14 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
             _strategy = strategy;
         }
 
-        public IAtomicEntityWriter<TKey, TEntity> GetEntityWriter<TKey, TEntity>()
+        public IAtomicWriter<TKey, TEntity> GetEntityWriter<TKey, TEntity>()
         {
-            return new FileAtomicEntityContainer<TKey, TEntity>(_folderPath, _strategy);
+            return new FileAtomicContainer<TKey, TEntity>(_folderPath, _strategy);
         }
 
-        public IAtomicEntityReader<TKey, TEntity> GetEntityReader<TKey, TEntity>()
+        public IAtomicReader<TKey, TEntity> GetEntityReader<TKey, TEntity>()
         {
-            return new FileAtomicEntityContainer<TKey, TEntity>(_folderPath, _strategy);
+            return new FileAtomicContainer<TKey, TEntity>(_folderPath, _strategy);
         }
 
         readonly object _initializationLock = new object();

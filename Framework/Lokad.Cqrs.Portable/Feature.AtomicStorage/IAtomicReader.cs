@@ -8,7 +8,7 @@
 
 namespace Lokad.Cqrs.Feature.AtomicStorage
 {
-    public interface IAtomicEntityReader<in TKey,TView>
+    public interface IAtomicReader<in TKey,TView>
         //where TView : IAtomicEntity<TKey>
     {
         /// <summary>

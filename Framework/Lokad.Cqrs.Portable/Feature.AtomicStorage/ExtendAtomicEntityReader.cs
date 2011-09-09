@@ -4,7 +4,7 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
 {
     public static class ExtendAtomicEntityReader
     {
-        public static Optional<TEntity> Get<TKey,TEntity>(this IAtomicEntityReader<TKey,TEntity> self, TKey key)
+        public static Optional<TEntity> Get<TKey,TEntity>(this IAtomicReader<TKey,TEntity> self, TKey key)
         {
             TEntity entity;
             if (self.TryGet(key, out entity))
@@ -14,7 +14,7 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
             return Optional<TEntity>.Empty;
         }
 
-        public static TEntity Load<TKey,TEntity>(this IAtomicEntityReader<TKey,TEntity> self, TKey key)
+        public static TEntity Load<TKey,TEntity>(this IAtomicReader<TKey,TEntity> self, TKey key)
         {
             TEntity entity;
             if (self.TryGet(key, out entity))

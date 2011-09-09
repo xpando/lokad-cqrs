@@ -15,15 +15,15 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
     /// Azure implementation of the view reader/writer
     /// </summary>
     /// <typeparam name="TEntity">The type of the view.</typeparam>
-    public sealed class AzureAtomicEntityReader<TKey, TEntity> :
-        IAtomicEntityReader<TKey, TEntity>
+    public sealed class AzureAtomicReader<TKey, TEntity> :
+        IAtomicReader<TKey, TEntity>
         //where TEntity : IAtomicEntity<TKey>
     {
         readonly CloudBlobContainer _entityContainer;
         readonly IAtomicStorageStrategy _strategy;
         readonly CloudBlobContainer _singletonContainer;
 
-        public AzureAtomicEntityReader(IAzureStorageConfig storage, IAtomicStorageStrategy strategy)
+        public AzureAtomicReader(IAzureStorageConfig storage, IAtomicStorageStrategy strategy)
         {
             _strategy = strategy;
             var client = storage.CreateBlobClient();

@@ -16,14 +16,14 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
 {
     public sealed class AzureAtomicStorageFactory : IAtomicStorageFactory
     {
-        public IAtomicEntityWriter<TKey, TEntity> GetEntityWriter<TKey, TEntity>()
+        public IAtomicWriter<TKey, TEntity> GetEntityWriter<TKey, TEntity>()
         {
-            return new AzureAtomicEntityWriter<TKey, TEntity>(_storage, _strategy);
+            return new AzureAtomicWriter<TKey, TEntity>(_storage, _strategy);
         }
 
-        public IAtomicEntityReader<TKey, TEntity> GetEntityReader<TKey, TEntity>()
+        public IAtomicReader<TKey, TEntity> GetEntityReader<TKey, TEntity>()
         {
-            return new AzureAtomicEntityReader<TKey, TEntity>(_storage, _strategy);
+            return new AzureAtomicReader<TKey, TEntity>(_storage, _strategy);
         }
 
         readonly object _initializationLock = new object();

@@ -22,15 +22,15 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
             _strategy = strategy;
         }
 
-        public IAtomicEntityWriter<TKey,TEntity> GetEntityWriter<TKey,TEntity>()
+        public IAtomicWriter<TKey,TEntity> GetEntityWriter<TKey,TEntity>()
         {
-            return new MemoryAtomicEntityContainer<TKey, TEntity>(_store,_strategy);
+            return new MemoryAtomicContainer<TKey, TEntity>(_store,_strategy);
         }
 
 
-        public IAtomicEntityReader<TKey, TEntity> GetEntityReader<TKey, TEntity>()
+        public IAtomicReader<TKey, TEntity> GetEntityReader<TKey, TEntity>()
         {
-            return new MemoryAtomicEntityContainer<TKey, TEntity>(_store,_strategy);
+            return new MemoryAtomicContainer<TKey, TEntity>(_store,_strategy);
         }
 
         public IEnumerable<string> Initialize()

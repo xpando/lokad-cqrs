@@ -11,14 +11,14 @@ using System.IO;
 
 namespace Lokad.Cqrs.Feature.AtomicStorage
 {
-    public sealed class FileAtomicEntityContainer<TKey, TEntity> : IAtomicEntityReader<TKey, TEntity>,
-                                                                   IAtomicEntityWriter<TKey, TEntity>
+    public sealed class FileAtomicContainer<TKey, TEntity> : IAtomicReader<TKey, TEntity>,
+                                                             IAtomicWriter<TKey, TEntity>
     {
         readonly IAtomicStorageStrategy _strategy;
         readonly string _entityPath;
         readonly string _singletonPath;
 
-        public FileAtomicEntityContainer(string directoryPath, IAtomicStorageStrategy strategy)
+        public FileAtomicContainer(string directoryPath, IAtomicStorageStrategy strategy)
         {
             _strategy = strategy;
             _entityPath = Path.Combine(directoryPath, _strategy.GetFolderForEntity(typeof(TEntity)));
