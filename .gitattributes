@@ -1,2 +1,8 @@
-*.sln  eol=crlf
+*.cscfg text
+*.csdef text
+*.config text
+*.conf text
+*.xml text
+*.js text
+*.ReSharper text
 * text=auto

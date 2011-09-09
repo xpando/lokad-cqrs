@@ -29,7 +29,7 @@ namespace Lokad.Cqrs
 
             public void Handle(Act message)
             {
-                Given_Tx_Scenarios.Consume(message, _storage);
+                Consume(message, _storage);
             }
         }
 
