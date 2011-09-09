@@ -24,8 +24,7 @@ Note, that if you use something like Greg's lambda handlers, you don't need hand
 
     builder.Domain(d =>
         {
-            d.HandlerSample<IConsume<Define.Command>>(m => m.Consume(null));
-            d.ContextFactory((envelope, message) => new MessageContext(envelope.EnvelopeId, envelope.CreatedOnUtc));
+            d.HandlerSample<IConsume<Define.Command>>(m => m.Consume(null));            
             d.InAssemblyOf<RunTaskCommand>(); 
         });
 
@@ -33,8 +32,7 @@ Note, that if you use something like Greg's lambda handlers, you don't need hand
 
     builder.MessagesWithHandlersFromAutofac(d =>
         {
-            d.HandlerSample<Define.Handle<Define.Command>>(m => m.Handle(null));
-            d.ContextFactory((envelope, message) => new MessageContext(envelope.EnvelopeId, envelope.CreatedOnUtc));
+            d.HandlerSample<Define.Handle<Define.Command>>(m => m.Handle(null));            
             d.InAssemblyOf<RunTaskCommand>();
         });
 
