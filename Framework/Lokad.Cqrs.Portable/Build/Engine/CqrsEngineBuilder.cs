@@ -32,6 +32,31 @@ namespace Lokad.Cqrs.Build.Engine
         readonly SystemObserver _observer;
         readonly Container _messyWires = new Container();
 
+        /// <summary>
+        /// Tasks that are executed after engine is initialized and before starting up
+        /// </summary>
+        public List<IEngineStartupTask> StartupTasks = new List<IEngineStartupTask>();
+        /// <summary>
+        /// Tasks that are executed before engine is being built
+        /// </summary>
+        public List<IAfterConfigurationTask> AfterConfigurationTasks = new List<IAfterConfigurationTask>();
+
+        void ExecuteAlterConfiguration()
+        {
+            foreach (var task in AfterConfigurationTasks)
+            {
+                task.Execute(this);
+            }
+        }
+
+        void ExecuteStartupTasks(CqrsEngineHost host)
+        {
+            foreach (var task in StartupTasks)
+            {
+                task.Execute(host);
+            }
+        }
+
         public CqrsEngineBuilder()
         {
             // init time observer
@@ -201,8 +226,13 @@ namespace Lokad.Cqrs.Build.Engine
             _messyWires.Register(new MessageDuplicationManager());
             _moduleEnlistments(_messyWires);
 
+            ExecuteAlterConfiguration();
+
             var host = new CqrsEngineHost(_messyWires, _setup.Observer, _setup.GetProcesses());
             host.Initialize();
+
+            ExecuteStartupTasks(host);
+
             return host;
         }
 

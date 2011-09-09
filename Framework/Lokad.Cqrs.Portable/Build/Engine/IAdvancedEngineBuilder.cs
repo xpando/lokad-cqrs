@@ -17,7 +17,6 @@ namespace Lokad.Cqrs.Build.Engine
         void RegisterQueueWriterFactory(Func<Container, IQueueWriterFactory> activator);
         void RegisterModule(IFunqlet module);
         void ConfigureContainer(Action<Container> build);
-        
         void RegisterObserver(IObserver<ISystemEvent> observer);
         IList<IObserver<ISystemEvent>> Observers { get; }
         EngineSetup Setup { get; }

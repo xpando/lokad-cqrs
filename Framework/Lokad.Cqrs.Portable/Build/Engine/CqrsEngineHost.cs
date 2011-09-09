@@ -72,7 +72,6 @@ namespace Lokad.Cqrs.Build.Engine
 
         internal void Initialize()
         {
-         
             _observer.Notify(new EngineInitializationStarted());
             foreach (var process in _serverProcesses)
             {

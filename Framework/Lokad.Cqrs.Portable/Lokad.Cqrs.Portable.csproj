@@ -126,6 +126,8 @@
     <Compile Include="Feature.TapeStorage\TapeRecord.cs" />
     <Compile Include="FileStorageConfig.cs" />
     <Compile Include="HandlerFactory.cs" />
+    <Compile Include="IAfterConfigurationTask.cs" />
+    <Compile Include="IEngineStartupTask.cs" />
     <Compile Include="ImmutableAttribute.cs" />
     <Compile Include="MemoryStorage.cs" />
     <Compile Include="MessageContext.cs" />

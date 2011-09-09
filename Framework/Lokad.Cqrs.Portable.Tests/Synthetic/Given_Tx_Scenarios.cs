@@ -66,7 +66,6 @@ namespace Lokad.Cqrs.Synthetic
                 sender.SendBatch(new[] {new Act(), new Act(), new Act()});
 
 
-
                 var task = engine.Start(source.Token);
                 if (!task.Wait(TestSpeed))
                 {
