@@ -3,11 +3,16 @@ layout: post
 title: Lokad.CQRS Migration Notes
 ---
 
-Migrate from v2.0 to v3.0
+Migrate from v2.0 to vNext
 =========================
 
-These are before/after samples to demonstrate changes in Lokad.Cqrs configuration API from version 2 
+Below are some samples to demonstrate changes in Lokad.Cqrs configuration API from version 2 
 (and some times before) to Next.
+
+Please keep in mind, that vNext is not a release yet. Although we use it in production already,
+it is and will be changed rapidly to accomodate features for various deployments as we discover them.
+
+If you need something stable you are encouraged to use v2 for the time being.
 
 Domain configuration
 --------------------
@@ -79,3 +84,18 @@ Only specialized atomic interfaces were changed (if you used them).
     IAtomicEntityReader<TKey, TValue>                       IAtomicReader<TKey, TValue>
     IAtomicSingletonWriter<TValue>                          IAtomicWriter<unit, TValue>
     IAtomicSingletonReader<TValue>                          IAtomicReader<unit, TValue>
+
+
+Something does not work out?
+----------------------------
+
+You can also check out:
+
+* Snippets project in branch `next` of [lokad-cqrs](https://github.com/Lokad/lokad-cqrs)
+* [Lokad-cqrs-samples](https://github.com/Lokad/lokad-cqrs-samples)
+* [Community](http://groups.google.com/group/lokad)
+
+This document is stored on github in `gh-pages` branch of lokad-cqrs (see [source](https://github.com/Lokad/lokad-cqrs/edit/gh-pages/docs/migrate.markdown))
+
+If you have found a typo or want to add another sample to this document, it would be awesome to send us
+a [pull request](http://help.github.com/send-pull-requests/) with the changes. 
