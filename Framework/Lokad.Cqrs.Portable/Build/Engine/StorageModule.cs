@@ -74,9 +74,6 @@ namespace Lokad.Cqrs.Build.Engine
             AtomicIsInFiles(folder, builder => { });
         }
 
-
-        
-
         public StorageModule(ISystemObserver observer)
         {
             Observer = observer;
@@ -115,16 +112,12 @@ namespace Lokad.Cqrs.Build.Engine
             var setup = container.TryResolve<EngineSetup>();
             if (null != setup)
             {
-                var process = new AtomicStorageInitialization(new[] {_atomicStorageFactory},
-                    container.Resolve<ISystemObserver>());
-                setup.AddProcess(process);
+                setup.AddProcess(new AtomicStorageInitialization(new[] {_atomicStorageFactory}, setup.Observer));
+                setup.AddProcess(new TapeStorageInitilization(new[] { _tapeStorage }));
             }
 
-
             container.Register(_streamingRoot);
-
             container.Register(_tapeStorage);
-            container.Register<IEngineProcess>(new TapeStorageInitilization(new[] {_tapeStorage}));
         }
     }
 }
