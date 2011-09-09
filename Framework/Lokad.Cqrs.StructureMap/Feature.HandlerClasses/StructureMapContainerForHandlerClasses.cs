@@ -8,7 +8,6 @@
 
 using System;
 using StructureMap;
-using Container = Lokad.Cqrs.Core.Container;
 
 namespace Lokad.Cqrs.Feature.HandlerClasses
 {
@@ -35,20 +34,20 @@ namespace Lokad.Cqrs.Feature.HandlerClasses
                         SkipDispose = true
                     };
 
-           
+
             return new StructureMapContainerForHandlerClasses(_container.GetNestedContainer());
         }
 
-        public bool SkipDispose { get; set; }
+        bool SkipDispose { get; set; }
 
         public object ResolveHandlerByServiceType(Type serviceType)
         {
             return _container.GetInstance(serviceType);
         }
-        
+
         public void Dispose()
         {
-            if(!SkipDispose)
+            if (!SkipDispose)
                 _container.Dispose();
         }
     }

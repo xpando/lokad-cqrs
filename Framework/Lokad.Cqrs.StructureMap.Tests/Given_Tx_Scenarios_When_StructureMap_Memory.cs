@@ -38,7 +38,7 @@ namespace Lokad.Cqrs
             config.MessagesWithHandlersFromStructureMap(d => d.WhereMessagesAre<Act>());
             config.Memory(m =>
                 {
-                    m.AddMemorySender("do");
+                    m.AddMemorySender("do", x => x.IdGeneratorForTests());
                     m.AddMemoryProcess("do", x => x.DispatchAsCommandBatch());
                 });
         }

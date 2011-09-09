@@ -216,7 +216,7 @@ namespace Lokad.Cqrs.Core
 
 		#endregion
 
-		internal void TrackDisposable(object instance)
+		public void TrackDisposable(object instance)
 		{
 			_disposables.Push(new WeakReference(instance));
 		}

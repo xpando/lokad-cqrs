@@ -75,7 +75,7 @@ namespace Lokad.Cqrs.Build.Engine
         }
 
 
-        Action<Container> _modules = container => { };
+        
 
         public StorageModule(ISystemObserver observer)
         {
@@ -92,12 +92,6 @@ namespace Lokad.Cqrs.Build.Engine
         {
             _streamingRoot = streamingRoot;
         }
-
-        public void EnlistModule(Action<Container> module)
-        {
-            _modules += module;
-        }
-
 
         public void Configure(Container container)
         {

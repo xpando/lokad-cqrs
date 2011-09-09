@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Transactions;
@@ -33,7 +34,11 @@ namespace Lokad.Cqrs.Synthetic
         {
             new TransactionTester
                 {
-                    OnCommit = () => storage.AddOrUpdateSingleton(() => 1, i => i + 1)
+                    OnCommit = () =>
+                        {
+                            var singleton = storage.AddOrUpdateSingleton(() => 1, i => i + 1);
+                            //Trace.WriteLine("Commit kicked " + singleton);
+                        }
                 };
 
             if (message.Fail)
@@ -67,13 +72,15 @@ namespace Lokad.Cqrs.Synthetic
 
 
                 var task = engine.Start(source.Token);
+                //    Trace.WriteLine("Started");
                 if (!task.Wait(TestSpeed))
                 {
                     source.Cancel();
                     Assert.Fail("System should be stopped by now");
                 }
 
-                var count = engine.Resolve<NuclearStorage>().GetSingletonOrNew<int>();
+                var storage = engine.Resolve<NuclearStorage>();
+                var count = storage.GetSingletonOrNew<int>();
                 Assert.AreEqual(3, count, "Three acts are expected");
             }
         }

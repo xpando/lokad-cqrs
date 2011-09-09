@@ -15,28 +15,20 @@ namespace Lokad.Cqrs.Feature.HandlerClasses
     /// <summary>
     /// Class capable of building nested container provider
     /// </summary>
-    public class StructureMapContainerProvider
+    public static class StructureMapContainerProvider
     {
-        readonly IContainer _structureMapContainer;
-
-        public StructureMapContainerProvider(IContainer structureMapContainer)
+        public static IContainerForHandlerClasses Build(Container container, Type[] handlerTypes,
+            IContainer structureMap)
         {
-            _structureMapContainer = structureMapContainer;
-        }
-
-        public IContainerForHandlerClasses Build(Container container, Type[] handlerTypes)
-        {
-            var containerHandler = new StructureMapContainerForHandlerClasses(_structureMapContainer);
-
-            _structureMapContainer.Configure(c =>
+            structureMap.Configure(c =>
                 {
                     foreach (var handlerType in handlerTypes)
                         c.For(handlerType);
                 });
-
-            container.Register(_structureMapContainer);
-
-            return containerHandler;
+            container.Register(structureMap);
+            // dispose container, when server shuts down
+            container.TrackDisposable(structureMap);
+            return new StructureMapContainerForHandlerClasses(structureMap);
         }
     }
 }

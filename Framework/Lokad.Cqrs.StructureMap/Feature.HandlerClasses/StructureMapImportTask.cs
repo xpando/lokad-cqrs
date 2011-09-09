@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using Lokad.Cqrs.Build.Engine;
+using Lokad.Cqrs.Evil;
 using StructureMap;
 using Container = Lokad.Cqrs.Core.Container;
 
@@ -25,13 +27,19 @@ namespace Lokad.Cqrs.Feature.HandlerClasses
                         if (_structureMapContainer.Model.PluginTypes.Any(p => p.PluginType == type))
                             continue;
 
-                        c.For(type).Use((ctx) =>
+                        var method = typeof(Container)
+                            .GetMethod("Resolve", new Type[0])
+                            .MakeGenericMethod(type);
+                        c.For(type).Use(ctx =>
                             {
-                                var result = typeof(Container)
-                                    .GetMethod("Resolve", new Type[0])
-                                    .MakeGenericMethod(type)
-                                    .Invoke(host.Container, null);
-                                return result;
+                                try
+                                {
+                                    return method.Invoke(host.Container, null);
+                                }
+                                catch (TargetInvocationException tie)
+                                {
+                                    throw InvocationUtil.Inner(tie);
+                                }
                             });
                     }
                 });

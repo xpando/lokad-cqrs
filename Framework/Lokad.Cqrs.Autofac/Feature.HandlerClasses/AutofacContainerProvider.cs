@@ -25,10 +25,11 @@ namespace Lokad.Cqrs.Feature.HandlerClasses
             }
             // allow handlers to resolve items from the core container
             builder.RegisterSource(new FunqAdapterForAutofac(container));
-
-            var autofacContainer = builder.Build();
-            container.Register(autofacContainer);
-            return new AutofacContainerForHandlerClasses(autofacContainer);
+            var autofac = builder.Build();
+            container.Register(autofac);
+            // dispose container, when server shuts down
+            container.TrackDisposable(autofac);
+            return new AutofacContainerForHandlerClasses(autofac);
         }
     }
 }

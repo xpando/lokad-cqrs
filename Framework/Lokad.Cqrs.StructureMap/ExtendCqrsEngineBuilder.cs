@@ -1,4 +1,4 @@
-#region (c) 2010-2011 Lokad CQRS - New BSD License 
+                #region (c) 2010-2011 Lokad CQRS - New BSD License 
 
 // Copyright (c) Lokad SAS 2010-2011 (http://www.lokad.com)
 // This code is released as Open Source under the terms of the New BSD Licence
@@ -7,8 +7,6 @@
 #endregion
 
 using System;
-using System.Linq;
-using System.Reactive.Subjects;
 using Lokad.Cqrs.Build.Engine;
 using Lokad.Cqrs.Feature.HandlerClasses;
 using StructureMap;
@@ -25,7 +23,7 @@ namespace Lokad.Cqrs
         public static void MessagesWithHandlersFromStructureMap(this CqrsEngineBuilder builder,
             Action<MessagesWithHandlersConfigurationSyntax> config)
         {
-            MessagesWithHandlersFromStructureMap(builder,config,ObjectFactory.Container);
+            MessagesWithHandlersFromStructureMap(builder, config, ObjectFactory.Container);
         }
 
         /// <summary>
@@ -37,10 +35,8 @@ namespace Lokad.Cqrs
         public static void MessagesWithHandlersFromStructureMap(this CqrsEngineBuilder builder,
             Action<MessagesWithHandlersConfigurationSyntax> config, IContainer container)
         {
-
-            var provider = new StructureMapContainerProvider(container);
+            builder.MessagesWithHandlers((funq, classes) => StructureMapContainerProvider.Build(funq, classes, container), config);
             builder.StartupTasks.Add(new StructureMapImportTask(container));
-            builder.MessagesWithHandlers(provider.Build, config);
         }
     }
 }

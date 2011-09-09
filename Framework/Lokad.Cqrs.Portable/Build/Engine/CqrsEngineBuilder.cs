@@ -36,6 +36,7 @@ namespace Lokad.Cqrs.Build.Engine
         /// Tasks that are executed after engine is initialized and before starting up
         /// </summary>
         public List<IEngineStartupTask> StartupTasks = new List<IEngineStartupTask>();
+
         /// <summary>
         /// Tasks that are executed before engine is being built
         /// </summary>
@@ -64,11 +65,10 @@ namespace Lokad.Cqrs.Build.Engine
             _setup = new EngineSetup(_observer);
 
             // snap in-memory stuff
-            
+
             var memoryAccount = new MemoryAccount();
             _setup.Registry.Add(new MemoryQueueWriterFactory(memoryAccount));
             _messyWires.Register(memoryAccount);
-
 
 
             _dataSerializer = types => new DataSerializerWithDataContracts(types);
