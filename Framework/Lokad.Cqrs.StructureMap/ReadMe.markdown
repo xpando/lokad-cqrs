@@ -7,7 +7,20 @@ This extension allows plugging [StructureMap](http://structuremap.net/structurem
 IoC container in Lokad.CQRS engine to manage resolution and lifetime of message 
 handler classes.
 
+Usage
+-----
 
+First you need to reference `Lokad.Cqrs.StructureMap.dll`.
+
+Then you wire messages and message handler classes together using something like this:
+	
+    builder.MessagesWithHandlersFromStructureMap(d => 
+    {   
+        // put your specific config code here
+        d => d.HandlerSample<IMyHandle<IMyCommand>>(h => h.Handle(null)));
+    });
+
+You can also use an overload for passing preconfigured StructureMap instance.
 
 Known limitations
 -----------------

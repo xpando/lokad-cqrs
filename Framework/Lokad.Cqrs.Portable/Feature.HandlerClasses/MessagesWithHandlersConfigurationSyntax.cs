@@ -13,7 +13,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;
 using Lokad.Cqrs.Core;
-using Lokad.Cqrs.Evil;
 
 // ReSharper disable UnusedMember.Global
 

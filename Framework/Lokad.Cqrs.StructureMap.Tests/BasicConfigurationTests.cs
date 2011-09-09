@@ -8,6 +8,7 @@
 
 using Lokad.Cqrs.Build.Engine;
 using NUnit.Framework;
+using StructureMap;
 
 namespace Lokad.Cqrs
 {
@@ -25,30 +26,26 @@ namespace Lokad.Cqrs
         }
 
 
-
-        [Test,Ignore("Child containers")]
+        [Test, Ignore("Child containers")]
         public void NestedNested()
         {
-            var container = new StructureMap.Container(c => c.For<IDep>().Use<MyDep>());
+            var container = new Container(c => c.For<IDep>().Use<MyDep>());
 
             using (var level1 = container.GetNestedContainer())
             {
                 var dep1 = level1.GetInstance<IDep>();
 
-                Assert.AreSame(dep1,level1.GetInstance<IDep>());
+                Assert.AreSame(dep1, level1.GetInstance<IDep>());
 
-                 using (var level2 = level1.GetNestedContainer())
-                 {
-                     Assert.AreSame(dep1, level2.GetInstance<IDep>());
-      
-                 }
+                using (var level2 = level1.GetNestedContainer())
+                {
+                    Assert.AreSame(dep1, level2.GetInstance<IDep>());
+                }
             }
         }
-
-
     }
 
-    public class MyDep:IDep {}
+    public class MyDep : IDep {}
 
     public interface IDep {}
 }

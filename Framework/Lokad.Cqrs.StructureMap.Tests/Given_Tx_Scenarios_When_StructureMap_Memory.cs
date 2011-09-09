@@ -33,10 +33,10 @@ namespace Lokad.Cqrs
             }
         }
 
-        protected override void Wire_partition_to_handler(CqrsEngineBuilder config)
+        protected override void Wire_partition_to_handler(CqrsEngineBuilder builder)
         {
-            config.MessagesWithHandlersFromStructureMap(d => d.WhereMessagesAre<Act>());
-            config.Memory(m =>
+            builder.MessagesWithHandlersFromStructureMap(d => d.WhereMessagesAre<Act>());
+            builder.Memory(m =>
                 {
                     m.AddMemorySender("do", x => x.IdGeneratorForTests());
                     m.AddMemoryProcess("do", x => x.DispatchAsCommandBatch());
