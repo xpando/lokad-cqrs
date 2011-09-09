@@ -7,8 +7,6 @@
 #endregion
 
 using System;
-using System.Linq;
-using Lokad.Cqrs.Build.Engine;
 using StructureMap;
 using Container = Lokad.Cqrs.Core.Container;
 
@@ -19,58 +17,26 @@ namespace Lokad.Cqrs.Feature.HandlerClasses
     /// </summary>
     public class StructureMapContainerProvider
     {
-        readonly IContainer _strutureMapContainer;
+        readonly IContainer _structureMapContainer;
 
-        public StructureMapContainerProvider(IContainer strutureMapContainer)
+        public StructureMapContainerProvider(IContainer structureMapContainer)
         {
-            _strutureMapContainer = strutureMapContainer;
+            _structureMapContainer = structureMapContainer;
         }
 
         public IContainerForHandlerClasses Build(Container container, Type[] handlerTypes)
         {
-            var containerHandler = new StructureMapContainerForHandlerClasses(_strutureMapContainer, container);
+            var containerHandler = new StructureMapContainerForHandlerClasses(_structureMapContainer);
 
-            _strutureMapContainer.Configure(c =>
+            _structureMapContainer.Configure(c =>
                 {
                     foreach (var handlerType in handlerTypes)
                         c.For(handlerType);
                 });
 
-            container.Register(_strutureMapContainer);
+            container.Register(_structureMapContainer);
 
             return containerHandler;
-        }
-    }
-
-    public sealed class StructureMapImportTask : IEngineStartupTask
-    {
-        readonly IContainer _structureMapContainer;
-
-        public StructureMapImportTask(IContainer structureMapContainer)
-        {
-            _structureMapContainer = structureMapContainer;
-        }
-
-        public void Execute(CqrsEngineHost host)
-        {
-            _structureMapContainer.Configure(c =>
-                {
-                    foreach (var service in host.Container.Services)
-                    {
-                        var type = service.Value.GetType().GetGenericArguments()[0];
-                        if (_structureMapContainer.Model.PluginTypes.Any(p => p.PluginType == type))
-                            continue;
-
-                        c.For(type).Use((ctx) =>
-                            {
-                                var result = typeof(Container)
-                                    .GetMethod("Resolve", new Type[0])
-                                    .MakeGenericMethod(type)
-                                    .Invoke(host.Container, null);
-                                return result;
-                            });
-                    }
-                });
         }
     }
 }

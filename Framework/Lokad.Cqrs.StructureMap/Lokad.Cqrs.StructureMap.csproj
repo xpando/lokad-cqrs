@@ -45,6 +45,7 @@
     <Compile Include="ExtendCqrsEngineBuilder.cs" />
     <Compile Include="Feature.HandlerClasses\StructureMapContainerForHandlerClasses.cs" />
     <Compile Include="Feature.HandlerClasses\StructureMapContainerProvider.cs" />
+    <Compile Include="Feature.HandlerClasses\StructureMapImportTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lokad.Cqrs.Portable\Lokad.Cqrs.Portable.csproj">

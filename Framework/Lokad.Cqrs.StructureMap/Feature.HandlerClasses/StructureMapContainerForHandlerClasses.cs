@@ -19,12 +19,10 @@ namespace Lokad.Cqrs.Feature.HandlerClasses
     public sealed class StructureMapContainerForHandlerClasses : IContainerForHandlerClasses
     {
         readonly IContainer _container;
-        readonly Container _lokadContainer;
 
-        public StructureMapContainerForHandlerClasses(IContainer container, Container lokadContainer)
+        public StructureMapContainerForHandlerClasses(IContainer container)
         {
             _container = container;
-            _lokadContainer = lokadContainer;
         }
 
         public IContainerForHandlerClasses GetChildContainer(ContainerScopeLevel level)
@@ -32,13 +30,13 @@ namespace Lokad.Cqrs.Feature.HandlerClasses
             //nested child containers isn't working with SM 
             //http://groups.google.com/group/structuremap-users/browse_frm/thread/5b981676ad386417
             if (level == ContainerScopeLevel.Item)
-                return new StructureMapContainerForHandlerClasses(_container, _lokadContainer)
+                return new StructureMapContainerForHandlerClasses(_container)
                     {
                         SkipDispose = true
                     };
 
            
-            return new StructureMapContainerForHandlerClasses(_container.GetNestedContainer(), _lokadContainer);
+            return new StructureMapContainerForHandlerClasses(_container.GetNestedContainer());
         }
 
         public bool SkipDispose { get; set; }
