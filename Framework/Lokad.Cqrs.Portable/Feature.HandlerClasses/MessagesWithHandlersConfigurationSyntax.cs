@@ -58,6 +58,15 @@ namespace Lokad.Cqrs.Feature.HandlerClasses
         }
 
         /// <summary>
+        /// Allows to specify custom context manager
+        /// </summary>
+        /// <param name="contextManager">The context manager.</param>
+        public void ContextManager(IMethodContextManager contextManager)
+        {
+            _contextManager = contextManager;
+        }
+
+        /// <summary>
         /// Specifies expression describing your interface lookup rules for handlers and messages.
         /// Defaults to <code><![CDATA[HandlerSample<IConsume<IMessage>>(h => h.Consume(null))]]></code>
         /// </summary>
