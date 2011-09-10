@@ -47,7 +47,8 @@ As a part of this change, actual Autofac container was removed from the portable
 cloned from [Funq](http://funq.codeplex.com/).
 
 Aside from decoupling and simplification, this has an important effect. There is no dynamic
-constructor resolution in the core engine.
+constructor resolution in the core engine - you need to write lambda factories (which has much
+better performance, by the way).
 
 **Before**
 
