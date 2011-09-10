@@ -74,6 +74,22 @@ you favorite container and register types in there. For example:
             d.HandlerSample<Define.Handle<Define.Command>>(m => m.Handle(null));            
             d.InAssemblyOf<RunTaskCommand>();
         }, cb);
+        
+Here's how all the container stuff looks like right now:
+
+    Lokad.CQRS.Engine
+      ^
+      |  ( supports)
+      |    
+    Lokad.CQRS.Core Lightweight Container
+      ^
+      |  (resolves unknown dependencies)
+      |    
+    Optional Extension Container (i.e.: `Autofac` or `StructureMap`)
+      ^
+      |  (use to resolve handler dependencies and manage lifetime)
+      |
+    Optional Handler classes (i.e.: `MyCustomerHandler : IConsumes<CreateCustomer>`)
 
 Queue and listener configuration
 --------------------------------
