@@ -14,8 +14,8 @@ it is and will be changed rapidly to accomodate features for various deployments
 
 If you need something stable you are encouraged to use v2 for the time being.
 
-Domain configuration
---------------------
+Domain and containers
+---------------------
 
 `Domain` was replaced with a set of container-specific configs to wire handler classes 
 (classes that process messages). At the moment of writing we support:
@@ -23,7 +23,8 @@ Domain configuration
 * Autofac in `Lokad.Cqrs.Autofac.dll` (you'll need to use `Autofac.dll` as well)
 * StructureMap in `Lokad.Cqrs.StructureMap.dll` (you'll need to use `StructureMap.dll` as well)
   
-Note, that if you use something like Greg's lambda handlers, you don't need handler classes and any container at all.
+Note, that if you use something like Greg's lambda handlers, you don't need handler 
+classes and any container at all.
 
 **Before**
 
@@ -40,6 +41,38 @@ Note, that if you use something like Greg's lambda handlers, you don't need hand
             d.HandlerSample<Define.Handle<Define.Command>>(m => m.Handle(null));            
             d.InAssemblyOf<RunTaskCommand>();
         });
+        
+As a part of this change, actual Autofac container was removed from the portable core 
+(residing in `Lokad.Cqrs.Portable.dll`). It was replaced by built-in lightweight container
+cloned from [Funq](http://funq.codeplex.com/).
+
+Aside from decoupling and simplification, this has an important effect. There is no dynamic
+constructor resolution in the core engine.
+
+**Before**
+
+    builder.Advanced.ConfigureContainer(x => 
+        x.RegisterType(ImplementationType).As(ContractType)
+    );
+    
+**After**
+  
+    builder.Advanced.ConfigureContainer(x =>
+        x.Register<ContractType>(c => new ImplementationType(c.Resolve<Dependency>());
+    );
+    
+However, if you need constructor resolution for message handler classes, you can leverage
+you favorite container and register types in there. For example:
+
+    var cb = new ContainerBuilder();
+    cb.RegisterType<Implementation>().As<Service>();
+    // other configs
+
+    builder.MessagesWithHandlersFromAutofac(d =>
+        {
+            d.HandlerSample<Define.Handle<Define.Command>>(m => m.Handle(null));            
+            d.InAssemblyOf<RunTaskCommand>();
+        }, cb);
 
 Queue and listener configuration
 --------------------------------
