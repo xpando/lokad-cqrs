@@ -1,0 +1,10 @@
+*.cscfg text
+*.csdef text
+*.config text
+*.conf text
+*.xml text
+*.js text
+*.cs text
+*.ReSharper eol=crlf
+*.sln eol=crlf
+.gitignore text
