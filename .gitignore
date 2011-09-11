@@ -12,3 +12,6 @@ _ReSharper.*
 *.cache
 ~$*
 *~
+*.pidb
+*.userprefs
+test-results
