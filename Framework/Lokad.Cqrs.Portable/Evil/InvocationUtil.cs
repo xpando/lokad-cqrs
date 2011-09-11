@@ -16,7 +16,6 @@ namespace Lokad.Cqrs.Evil
     public static class InvocationUtil
     {
         static readonly MethodInfo InternalPreserveStackTraceMethod;
-
         static InvocationUtil()
         {
             InternalPreserveStackTraceMethod = typeof (Exception).GetMethod("InternalPreserveStackTrace",
@@ -31,7 +30,10 @@ namespace Lokad.Cqrs.Evil
         public static Exception Inner(TargetInvocationException e)
         {
             if (e == null) throw new ArgumentNullException("e");
-            InternalPreserveStackTraceMethod.Invoke(e.InnerException, new object[0]);
+            if (null != InternalPreserveStackTraceMethod)
+            {
+                InternalPreserveStackTraceMethod.Invoke(e.InnerException, new object[0]);
+            }
             return e.InnerException;
         }
     }
