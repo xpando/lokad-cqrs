@@ -6,11 +6,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Runtime.Serialization;
 using System.Threading;
 using Lokad.Cqrs.Build.Engine;
@@ -131,18 +127,16 @@ namespace Lokad.Cqrs
             build(builder);
 
 
-            var subj = new Subject<ISystemEvent>();
+            
 
             builder.Advanced.Observers.Clear();
-            builder.Advanced.RegisterObserver(subj);
             int count = 0;
-            subj
-                .OfType<EnvelopeAcked>()
-                .Subscribe(acked => count += 1);
+            
 
             var watch = new Stopwatch();
 
             using (var token = new CancellationTokenSource())
+            using (builder.When<EnvelopeAcked>(e => count +=1))
             using (var engine = builder.Build())
             {
                 engine.Start(token.Token);

@@ -6,11 +6,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Runtime.Serialization;
 using System.Threading;
 using Lokad.Cqrs.Build.Engine;
@@ -119,34 +116,32 @@ namespace Lokad.Cqrs
             build(builder);
 
 
-            var subj = new Subject<ISystemEvent>();
+            
 
             builder.Advanced.Observers.Clear();
-            builder.Advanced.RegisterObserver(subj);
+            
 
             var step = (useMessages / 5);
             int count = 0;
             var watch = new Stopwatch();
             using (var token = new CancellationTokenSource())
             {
-                subj
-                    .OfType<EnvelopeAcked>()
-                    .Subscribe(ea =>
-                        {
-                            count += 1;
+                using (builder.When<EnvelopeAcked>(ea =>
+                {
+                    count += 1;
 
-                            if ((count % step) == 0)
-                            {
-                                var messagesPerSecond = count / watch.Elapsed.TotalSeconds;
-                                Console.WriteLine("{0} - {1}", count, Math.Round(messagesPerSecond, 1));
-                            }
+                    if ((count % step) == 0)
+                    {
+                        var messagesPerSecond = count / watch.Elapsed.TotalSeconds;
+                        Console.WriteLine("{0} - {1}", count, Math.Round(messagesPerSecond, 1));
+                    }
 
 
-                            if (ea.Attributes.Any(ia => ia.Key == "last"))
-                            {
-                                token.Cancel();
-                            }
-                        });
+                    if (ea.Attributes.Any(ia => ia.Key == "last"))
+                    {
+                        token.Cancel();
+                    }
+                }))
 
                 using (var engine = builder.Build())
                 {

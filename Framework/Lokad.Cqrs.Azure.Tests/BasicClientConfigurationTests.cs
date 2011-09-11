@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using System.Threading;
 using Lokad.Cqrs.Build.Client;
 using Lokad.Cqrs.Build.Engine;
 using Lokad.Cqrs.Core.Dispatch.Events;
-using Microsoft.WindowsAzure;
 using NUnit.Framework;
 using System.Linq;
 
@@ -31,13 +26,11 @@ namespace Lokad.Cqrs
             var dev = AzureStorage.CreateConfigurationForDev();
             WipeAzureAccount.Fast(s => s.StartsWith("test-"), dev);
 
-            var events = new Subject<ISystemEvent>();
             var b = new CqrsEngineBuilder();
             b.Azure(c => c.AddAzureProcess(dev, "test-publish",HandlerComposer.Empty));
-            b.Advanced.RegisterObserver(events);
+            using (var source = new CancellationTokenSource())
+            using (b.When<EnvelopeAcked>(e => source.Cancel()))
             using (var engine = b.Build())
-            using  (var source = new CancellationTokenSource())
-            using (events.OfType<EnvelopeAcked>().Subscribe(e => source.Cancel()))
             {
                 var task = engine.Start(source.Token);
 

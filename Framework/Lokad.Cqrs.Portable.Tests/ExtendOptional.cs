@@ -6,9 +6,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using Lokad.Cqrs.Build.Engine;
 using Lokad.Cqrs.Core.Reactive;
 using NUnit.Framework;
