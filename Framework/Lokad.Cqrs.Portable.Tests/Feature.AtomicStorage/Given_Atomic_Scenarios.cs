@@ -78,10 +78,13 @@ namespace Lokad.Cqrs.Feature.AtomicStorage
 
         static IDisposable Cancel_when_ok_received(CancellationTokenSource source, CqrsEngineBuilder builder)
         {
-            return builder
-                .TestOfType<EnvelopeSent>()
-                .Where(e => e.Attributes.Any(a => a.Key == "ok"))
-                .Subscribe(e => source.Cancel());
+            return builder.When<EnvelopeSent>(s =>
+                    {
+                        if (s.Attributes.Any(a => a.Key == "ok"))
+                        {
+                            source.Cancel();
+                        }
+                    });
         }
 
         protected static void HandleAtomic(AtomicMessage msg, IMessageSender sender, IAtomicWriter<unit, int> arg3)

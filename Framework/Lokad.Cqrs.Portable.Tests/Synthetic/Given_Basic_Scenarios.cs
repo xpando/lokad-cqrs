@@ -55,9 +55,9 @@ namespace Lokad.Cqrs.Synthetic
         {
             var builder = new CqrsEngineBuilder();
             Wire_partition_to_handler(builder);
-
+            
             using (var source = new CancellationTokenSource())
-            using (builder.TestSubscribe<EnvelopeQuarantined>(e => source.Cancel()))
+            using (builder.When<EnvelopeQuarantined>(e => source.Cancel()))
             using (var engine = builder.Build())
             {
                 engine.Resolve<IMessageSender>().SendOne(new FailingMessage()
@@ -81,7 +81,7 @@ namespace Lokad.Cqrs.Synthetic
             Wire_partition_to_handler(builder);
 
             using (var source = new CancellationTokenSource())
-            using (builder.TestSubscribe<EnvelopeAcked>(e => source.Cancel()))
+            using (builder.When<EnvelopeAcked>(e => source.Cancel()))
             using (var engine = builder.Build())
             {
                 var sender = engine.Resolve<IMessageSender>();

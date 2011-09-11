@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Lokad.Cqrs.Build.Engine;
+using Lokad.Cqrs.Core.Reactive;
 using NUnit.Framework;
 using System.Linq;
 
@@ -47,28 +48,45 @@ namespace Lokad.Cqrs
 
     public static class ExtendEngineHostForTests
     {
-
-        
-        public static IDisposable TestSubscribe<T>(this CqrsEngineBuilder host, Action<T> when)
-            where T : ISystemEvent
-        {
-            
-            return host.TestOfType<T>().Subscribe(when);
-        }
-        public static IObservable<T> TestOfType<T>(this CqrsEngineBuilder host)
+        public static IDisposable When<T>(this CqrsEngineBuilder host, Action<T> when)
+            where T : class, ISystemEvent
         {
             var observers = host.Advanced.Observers;
             var subject = observers
-                .Where(t => typeof(IObservable<ISystemEvent>).IsAssignableFrom(t.GetType()))
-                .Cast<IObservable<ISystemEvent>>()
+                .OfType<ImmediateEventsObserver>()
                 .FirstOrDefault();
             if (null == subject)
             {
-                var s = new Subject<ISystemEvent>();
+                var s = new ImmediateEventsObserver();
                 subject = s;
                 observers.Add(s);
             }
-            return subject.OfType<T>();
+            Action<ISystemEvent> action = e =>
+                {
+                    var type = e as T;
+
+                    if (type != null)
+                    {
+                        when(type);
+                    }
+                };
+            subject.Event += action;
+            return new Disposer(() => subject.Event -= action);
+
+            
         } 
+        sealed class Disposer : IDisposable
+        {
+            readonly Action _dispose;
+            public Disposer(Action dispose)
+            {
+                _dispose = dispose;
+            }
+
+            public void Dispose()
+            {
+                _dispose();
+            }
+        }
     }
 }

@@ -7,8 +7,6 @@
 #endregion
 
 using System;
-using System.Linq;
-using System.Reactive.Linq;
 using System.Runtime.Serialization;
 using System.Threading;
 using Lokad.Cqrs.Build.Engine;
@@ -61,10 +59,15 @@ namespace Lokad.Cqrs
         {
             var builder = new CqrsEngineBuilder();
             config(builder);
+            int i = 0;
             using (var t = new CancellationTokenSource())
-            using (builder.TestOfType<EnvelopeAcked>().Where(ea => ea.QueueName == "do")
-                .Skip(5)
-                .Subscribe(c => t.Cancel()))
+            using (builder.When<EnvelopeAcked>(ea =>
+                {
+                    if (ea.QueueName != "do")
+                        return;
+                    if (i++ >= 5)
+                        t.Cancel();
+                }))
             using (var engine = builder.Build())
             {
                 engine.Start(t.Token);
