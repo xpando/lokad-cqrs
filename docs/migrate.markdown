@@ -91,6 +91,13 @@ Here's how all the container stuff looks like right now:
       |
     Optional Handler classes (i.e.: `MyCustomerHandler : IConsumes<CreateCustomer>`)
 
+Note, that if you register something in an extension container, then this will
+not be accessible in `engine.Resolve` by default. In order to access your own
+extension container do something like:
+
+    var autofac = host.Resolve<Autofac.IContainer>();
+    var myService = autofac.Resolve<IContract>();
+
 Queue and listener configuration
 --------------------------------
 
