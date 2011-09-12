@@ -90,6 +90,7 @@ namespace Lokad.Cqrs.Synthetic
                         FailXTimes = 1
                     });
                 var task = engine.Start(source.Token);
+                Console.WriteLine(task.Status);
                 if (!task.Wait(TestSpeed))
                 {
                     source.Cancel();

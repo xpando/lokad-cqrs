@@ -115,10 +115,8 @@ namespace Lokad.Cqrs
             var builder = new CqrsEngineBuilder();
             build(builder);
 
-
-            
-
             builder.Advanced.Observers.Clear();
+            builder.UseProtoBufSerialization();
             
 
             var step = (useMessages / 5);
