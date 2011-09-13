@@ -7,6 +7,7 @@
 
 using System;
 using System.Configuration;
+using System.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -69,6 +70,7 @@ namespace Lokad.Cqrs
         /// <returns>
         /// configuration value
         /// </returns>
+        [DebuggerNonUserCode]
         public static string GetStringOrThrow(string key)
         {
             string result;
